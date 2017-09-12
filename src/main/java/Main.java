@@ -128,6 +128,7 @@ class ComparePathStructure {
 public class Main {
     public static void main(String[] args) throws IOException {
         //D:\java\pathSource D:\java\pathDest\path2
+
         if(args.length == 2){
             Path sourPath = Paths.get(args[0]);
             Path destPath = Paths.get(args[1]);
@@ -137,6 +138,5 @@ public class Main {
         else{
             throw new IllegalArgumentException("Введено не правельное количество аргументов!");
         }
-
     }
 }
