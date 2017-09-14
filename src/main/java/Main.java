@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -37,7 +36,6 @@ class ComparePathStructure {
             destLL = fvFoDest.getAllPaths();
 
             comparePathSourAndDest(sourLL, destLL);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,8 +45,7 @@ class ComparePathStructure {
         //проверяем папку/файл если такого нет, то создаем и удаляем его с  destLL коллекции
         for (Path sourFromList : sourLL) {
             try {
-                File f = new File(sourFromList.toString());
-                if (!f.exists() && Files.isDirectory(sourLL.getFirst())) {
+                if (Files.isDirectory(sourFromList)) {
                     createDirection(destLL, sourFromList);
                 } else {
                     copyFile(destLL, sourFromList);
@@ -61,7 +58,6 @@ class ComparePathStructure {
         for (int i = destLL.size() - 1 ; i >= 0 ; i--) {
             try {
                 Files.deleteIfExists(destLL.get(i));
-
                 System.out.println("delete  " + destLL.get(i));
             } catch (IOException e) {
                 System.out.println("директория не пустая" + e.getMessage());
@@ -84,7 +80,7 @@ class ComparePathStructure {
 
     private void copyFile(LinkedList<Path> destLL, Path sourFromList) throws IOException {
         Path pathToFile = sour.relativize(sourFromList);
-        if (pathToFile != null) {
+        if (pathToFile.toString() != "") {
             Path destPathToFile = Paths.get(dest.toString(), pathToFile.toString());
             if (!Files.exists(destPathToFile) || Files.size(destPathToFile) != Files.size(sourFromList)) {
                 System.out.println("copy file  " + destPathToFile);
@@ -128,7 +124,6 @@ class ComparePathStructure {
 public class Main {
     public static void main(String[] args) throws IOException {
         //D:\java\pathSource D:\java\pathDest\path2
-
         if(args.length == 2){
             Path sourPath = Paths.get(args[0]);
             Path destPath = Paths.get(args[1]);
